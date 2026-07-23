@@ -7,12 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import com.aditya.campusplacementtracker.service.StudentService;
+import com.aditya.campusplacementtracker.service.CompanyService;
+
 
 @Controller
 public class LoginController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private CompanyService companyService;
+
 
     @GetMapping("/login")
     public String loginPage() {
@@ -23,29 +30,26 @@ public class LoginController {
 
     @PostMapping("/login")
     public String processLogin(
-
             @RequestParam String username,
-
             @RequestParam String password,
-
             Model model
-
     ) {
 
         model.addAttribute("username", username);
 
-        Student student = new Student();
 
-        student.setName("Aditya");
-        student.setEmail("aditya@gmail.com");
-        student.setBranch("CSE");
-        student.setCgpa(8.9);
-        student.setPlaced(false);
+        model.addAttribute("studentCount",
+                studentService.getStudentCount());
 
-        studentService.saveStudent(student);
+        model.addAttribute("companyCount",
+                companyService.getCompanyCount());
+
+        model.addAttribute("placedStudentCount",
+                studentService.getPlacedStudentCount());
 
         return "dashboard";
 
     }
+
 
 }

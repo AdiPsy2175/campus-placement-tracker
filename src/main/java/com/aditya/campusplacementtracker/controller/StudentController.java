@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 @Controller
 public class StudentController {
@@ -19,9 +20,36 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/students")
-    public String viewStudents(Model model) {
+    public String viewStudents(
 
-        model.addAttribute("students", studentService.getAllStudents());
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "name") String sortBy,
+
+            @RequestParam(required = false) String keyword,
+
+            Model model) {
+
+        if (keyword != null && !keyword.isEmpty()) {
+
+            model.addAttribute("students",
+                    studentService.searchStudents(keyword));
+
+        } else {
+
+            Page<Student> studentPage =
+                    studentService.getStudentsPage(page, sortBy);
+
+            model.addAttribute("students",
+                    studentPage.getContent());
+
+            model.addAttribute("currentPage", page);
+
+            model.addAttribute("totalPages",
+                    studentPage.getTotalPages());
+
+            model.addAttribute("sortBy", sortBy);
+        }
 
         return "students";
     }

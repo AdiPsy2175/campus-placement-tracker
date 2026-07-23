@@ -40,6 +40,38 @@
         background:#f1f1f1;
     }
 
+    .search-form{
+    margin:20px 0;
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.search-form input{
+    width:300px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
+
+.search-form button,
+.clear-btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    background:#2f55d4;
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.search-form button:hover,
+.clear-btn:hover{
+    background:#1f3ea8;
+}
+
   </style>
 
 </head>
@@ -47,6 +79,44 @@
 <body>
 
 <h1>Student List</h1>
+
+<form th:action="@{/students}" method="get" style="margin-bottom:15px;">
+
+  <label><b>Sort By :</b></label>
+
+  <select name="sortBy" onchange="this.form.submit()">
+
+    <option value="name"
+            th:selected="${sortBy=='name'}">
+      Name
+    </option>
+
+    <option value="cgpa"
+            th:selected="${sortBy=='cgpa'}">
+      CGPA
+    </option>
+
+    <option value="branch"
+            th:selected="${sortBy=='branch'}">
+      Branch
+    </option>
+
+  </select>
+
+</form>
+
+<form th:action="@{/students}" method="get" class="search-form">
+
+  <input type="text"
+         name="keyword"
+         th:value="${keyword}"
+         placeholder="Search by student name">
+
+  <button type="submit">Search</button>
+
+  <a href="/students" class="clear-btn">Clear</a>
+
+</form>
 
 <table>
 
@@ -84,6 +154,29 @@
   </tr>
 
 </table>
+
+<div style="margin-top:20px; text-align:center;">
+
+  <a th:if="${currentPage > 0}"
+     th:href="@{/students(page=${currentPage-1}, sortBy=${sortBy})}">
+    Previous
+  </a>
+
+  <span th:each="i : ${#numbers.sequence(0, totalPages-1)}">
+
+        <a th:href="@{/students(page=${i}, sortBy=${sortBy})}"
+           th:text="${i+1}"
+           style="margin:0 8px;">
+        </a>
+
+    </span>
+
+  <a th:if="${currentPage < totalPages-1}"
+     th:href="@{/students(page=${currentPage+1}, sortBy=${sortBy})}">
+    Next
+  </a>
+
+</div>
 
 </body>
 

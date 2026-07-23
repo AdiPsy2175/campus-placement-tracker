@@ -4,7 +4,10 @@ import com.aditya.campusplacementtracker.entity.Student;
 import com.aditya.campusplacementtracker.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import java.util.List;
 
 @Service
@@ -29,5 +32,22 @@ public class StudentService {
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
 
+    }
+
+    public long getStudentCount() {
+        return studentRepository.count();
+    }
+
+    public long getPlacedStudentCount() {
+        return studentRepository.countByPlacedTrue();
+    }
+
+    public List<Student> searchStudents(String keyword) {
+        return studentRepository.findByNameContainingIgnoreCase(keyword);
+    }
+
+    public Page<Student> getStudentsPage(int page, String sortBy) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sortBy));
+        return studentRepository.findAll(pageable);
     }
 }

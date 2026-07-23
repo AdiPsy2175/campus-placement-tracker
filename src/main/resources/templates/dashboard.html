@@ -54,6 +54,28 @@
         font-weight: bold;
     }
 
+    .actions{
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    text-decoration:none;
+    background:#2f55d4;
+    color:white;
+    padding:12px 22px;
+    border-radius:8px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#1f3ea8;
+}
+
   </style>
 
 </head>
@@ -67,8 +89,7 @@
   <h2>Dashboard</h2>
 
   <h3>
-    Welcome,
-    <span th:text="${username}"></span> 👋
+    Welcome, <span th:text="${username}"></span> 👋
   </h3>
 
   <hr>
@@ -77,23 +98,35 @@
 
     <div class="card">
       <h3>Total Students</h3>
-      <p>250</p>
+      <p th:text="${studentCount}"></p>
     </div>
 
     <div class="card">
       <h3>Total Companies</h3>
-      <p>18</p>
+      <p th:text="${companyCount}"></p>
     </div>
 
     <div class="card">
       <h3>Placed Students</h3>
-      <p>150</p>
+      <p th:text="${placedStudentCount}"></p>
     </div>
 
     <div class="card">
       <h3>Upcoming Drives</h3>
       <p>5</p>
     </div>
+
+  </div>
+
+  <div class="actions">
+
+    <a href="/students" class="btn">Manage Students</a>
+
+    <a href="/companies" class="btn">Manage Companies</a>
+
+    <a href="/add-company" class="btn">Add Company</a>
+
+    <a href="/add-student" class="btn">Add Student</a>
 
   </div>
 
