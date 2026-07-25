@@ -265,4 +265,43 @@ public class ApplicationService {
         return views;
     }
 
+    public boolean hasApplied(Long studentId, Long driveId) {
+
+        return applicationRepository.existsByStudentIdAndDriveId(studentId, driveId);
+
+    }
+
+    public List<ApplicationView> getApplicationsForStudent(Long studentId) {
+
+        List<Application> applications =
+                applicationRepository.findByStudentId(studentId);
+
+        List<ApplicationView> views = new ArrayList<>();
+
+        for (Application app : applications) {
+
+            PlacementDrive drive =
+                    placementDriveRepository
+                            .findById(app.getDriveId())
+                            .orElse(null);
+
+            String driveName = "";
+            String companyName = "";
+
+            if (drive != null) {
+                driveName = drive.getDriveName();
+                companyName = drive.getCompanyName();
+            }
+
+            views.add(new ApplicationView(
+                    app.getId(),
+                    companyName,
+                    driveName,
+                    app.getStatus()
+            ));
+        }
+
+        return views;
+    }
+
 }

@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.List;
 
+
 public interface StudentRepository extends JpaRepository<Student, Long> {
+    Optional<Student> findByUserUsername(String username);
+
     List<Student> findByPlacedTrue();
 
     List<Student> findByPlacedFalse();
@@ -20,5 +23,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Page<Student> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
 
-    Optional<Student> findByUserUsername(String username);
+
 }

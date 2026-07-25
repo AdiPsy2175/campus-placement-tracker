@@ -13,9 +13,15 @@ import com.aditya.campusplacementtracker.enums.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.Optional;
+import com.aditya.campusplacementtracker.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.aditya.campusplacementtracker.entity.User;
+import com.aditya.campusplacementtracker.enums.Role;
 
 @Service
 public class StudentService {
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -87,5 +93,28 @@ public class StudentService {
 
         return student.orElse(null);
 
+    }
+
+    public void createAccountsForExistingStudents() {
+
+        List<Student> students = studentRepository.findAll();
+
+        for (Student student : students) {
+
+            if (student.getUser() == null) {
+
+                User user = new User();
+
+                String username = student.getEmail().split("@")[0];
+
+                user.setUsername(username);
+                user.setPassword(passwordEncoder.encode("Temp@123"));
+                user.setRole(Role.STUDENT);
+
+                student.setUser(user);
+
+                studentRepository.save(student);
+            }
+        }
     }
 }
