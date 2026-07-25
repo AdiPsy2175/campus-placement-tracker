@@ -12,6 +12,7 @@ import com.aditya.campusplacementtracker.entity.User;
 import com.aditya.campusplacementtracker.enums.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -77,5 +78,14 @@ public class StudentService {
 
     public List<Student> getUnplacedStudents() {
         return studentRepository.findByPlacedFalse();
+    }
+
+    public Student getStudentByUsername(String username) {
+
+        Optional<Student> student =
+                studentRepository.findByUserUsername(username);
+
+        return student.orElse(null);
+
     }
 }
