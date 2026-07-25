@@ -1,7 +1,9 @@
 package com.aditya.campusplacementtracker.controller;
+
 import com.aditya.campusplacementtracker.entity.Company;
 import com.aditya.campusplacementtracker.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,18 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping("/companies")
-    public String viewCompanies(Model model) {
+    public String viewCompanies(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "companyName") String sortBy,
+            Model model) {
 
-        model.addAttribute("companies", companyService.getAllCompanies());
+        Page<Company> companyPage =
+                companyService.getCompaniesPage(page, sortBy);
+
+        model.addAttribute("companies", companyPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", companyPage.getTotalPages());
+        model.addAttribute("sortBy", sortBy);
 
         return "companies";
     }
@@ -51,5 +62,15 @@ public class CompanyController {
         companyService.deleteCompany(id);
 
         return "redirect:/companies";
+    }
+
+    @GetMapping("/companies/search")
+    public String searchCompanies(@RequestParam String keyword,
+                                  Model model) {
+
+        model.addAttribute("companies",
+                companyService.searchCompanies(keyword));
+
+        return "companies";
     }
 }

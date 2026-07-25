@@ -1,7 +1,12 @@
 package com.aditya.campusplacementtracker.service;
+
 import com.aditya.campusplacementtracker.entity.Company;
 import com.aditya.campusplacementtracker.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +35,17 @@ public class CompanyService {
 
     public long getCompanyCount() {
         return companyRepository.count();
+    }
+
+    public List<Company> searchCompanies(String keyword) {
+        return companyRepository.findByCompanyNameContainingIgnoreCase(keyword);
+    }
+
+    public Page<Company> getCompaniesPage(int page, String sortBy) {
+
+        Pageable pageable =
+                PageRequest.of(page, 5, Sort.by(sortBy));
+
+        return companyRepository.findAll(pageable);
     }
 }

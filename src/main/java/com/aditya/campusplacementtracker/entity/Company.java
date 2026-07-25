@@ -19,6 +19,17 @@ public class Company {
 
     private String location;
 
+    private String industry;
+
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
     public Company() {
     }
 
@@ -62,12 +73,18 @@ public class Company {
         this.location = location;
     }
 
-    public Company(Long id, String companyName, Double packageOffered, Double minimumCgpa, String location) {
+    public Company(Long id,
+                   String companyName,
+                   Double packageOffered,
+                   Double minimumCgpa,
+                   String location,
+                   String industry) {
+
         this.id = id;
         this.companyName = companyName;
         this.packageOffered = packageOffered;
         this.minimumCgpa = minimumCgpa;
         this.location = location;
-
+        this.industry = industry;
     }
 }

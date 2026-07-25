@@ -3,11 +3,12 @@ package com.aditya.campusplacementtracker.service;
 import com.aditya.campusplacementtracker.entity.Student;
 import com.aditya.campusplacementtracker.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -49,5 +50,13 @@ public class StudentService {
     public Page<Student> getStudentsPage(int page, String sortBy) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by(sortBy));
         return studentRepository.findAll(pageable);
+    }
+
+    public List<Student> getPlacedStudents() {
+        return studentRepository.findByPlacedTrue();
+    }
+
+    public List<Student> getUnplacedStudents() {
+        return studentRepository.findByPlacedFalse();
     }
 }

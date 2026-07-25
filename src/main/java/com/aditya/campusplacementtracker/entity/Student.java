@@ -4,19 +4,34 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Student {
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Student() {
     }
 
-    public Student(Long id, String name, String email, String branch, Double cgpa, Boolean placed) {
+    public Student(Long id, String name, String email, String branch, Double cgpa, Boolean placed, User user) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.branch = branch;
         this.cgpa = cgpa;
         this.placed = placed;
+        this.user = user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public String getName() {

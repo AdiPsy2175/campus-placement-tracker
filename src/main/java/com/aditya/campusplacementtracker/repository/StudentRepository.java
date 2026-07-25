@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
+    List<Student> findByPlacedTrue();
+
+    List<Student> findByPlacedFalse();
 
     long count();
 
@@ -16,4 +19,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByNameContainingIgnoreCase(String keyword);
 
     Page<Student> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
+
 }
